@@ -1,0 +1,137 @@
+import javax.swing.JButton;
+import java.util.ArrayList;
+import java.util.Iterator;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+
+/**
+ * [Truck.java]
+ * A Truck class, which holds boxes
+ * @author Taliesin Yip Hoi-Lee
+ * @version October 2, 2023
+ */
+public class Truck {
+    private final int truckID;
+    private final int maxWeight;
+    private final int height;
+    private final int length;
+    private final int width;
+    private final ArrayList<Box> boxes;
+    private JButton truckButton;
+    private final ImageIcon truckImage = new ImageIcon("C:\\Users\\qijul\\IdeaProjects\\School\\src\\Truck.png");
+
+    public Truck(int truckID, int maxWeight, int height, int length, int width, ArrayList<Box> boxes) {
+        this.truckID = truckID;
+        this.maxWeight = maxWeight;
+        this.height = height;
+        this.length = length;
+        this.width = width;
+        this.boxes = boxes;
+    }
+
+    public Truck(int truckID, int maxWeight, int height, int length, int width) {
+        this.truckID = truckID;
+        this.maxWeight = maxWeight;
+        this.height = height;
+        this.length = length;
+        this.width = width;
+        this.boxes = new ArrayList<Box>();
+    }
+
+    public int getTruckID() {
+        return this.truckID;
+    }
+
+    public int getMaxWeight() {
+        return this.maxWeight;
+    }
+
+    public int getHeight() {
+        return this.height;
+    }
+
+    public int getLength() {
+        return this.length;
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public ArrayList<Box> getBoxes() {
+        return this.boxes;
+    }
+
+    public void addBox(Box box) {
+        this.boxes.add(box);
+    }
+
+    //Warehouse.PlacementSystem methods------------------------------------------------------------------------------------------
+    public void removeBox(int boxId) {
+        for(int i = 0; i < this.boxes.size(); ++i) {
+            if (((Box)this.boxes.get(i)).getId() == boxId) {
+                this.boxes.remove(i);
+                --i;
+            }
+        }
+    }
+
+    public int getLoadedWeight() {
+        int weight = 0;
+        Box box;
+        for(Iterator var2 = this.boxes.iterator(); var2.hasNext(); weight += box.getWeight()) {
+            box = (Box)var2.next();
+        }
+        return weight;
+    }//-------------------------------------------------------------------------------------------------------------------
+
+    //Receiving System methods--------------------------------------------------------------------------------------------
+    @Override
+    public String toString() {
+        return "Truck{truckID=" + this.truckID + ", maxWeight=" + this.maxWeight + ", height=" + this.height + ", length=" + this.length + ", width=" + this.width + '}';
+    }
+
+    public String toFileFormat() {
+        return this.truckID + "\n" + this.maxWeight + "\n" + this.height + "\n" + this.length + "\n" + this.width;
+    }//------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * drawList
+     * draws the button of the truck, which redirects to a display of the truck
+     * @param graphicsPanel
+     * @return JButton
+     */
+    public JButton drawList(JPanel graphicsPanel) {
+        truckButton = new JButton("Truck " + getTruckID(), truckImage);
+        truckButton.setOpaque(true);
+        truckButton.setContentAreaFilled(false);
+        truckButton.setFocusPainted(false);
+        graphicsPanel.add(truckButton);
+        graphicsPanel.repaint();
+        return truckButton;
+    }
+
+    /**
+     * removeButton
+     * removes buttons from the graphics panel
+     * @param graphicsPanel
+     */
+    public void removeButton(JPanel graphicsPanel){
+        graphicsPanel.remove(truckButton);
+    }
+
+    /**
+     * findBox
+     * finds a box within the boxes ArrayList
+     * @param id
+     * @return Box
+     */
+    public int findBox(int id) {
+        for (int i = 0; i < boxes.size(); i++) {
+            if (boxes.get(i).getBoxID() == id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+}
